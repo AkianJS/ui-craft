@@ -7,6 +7,92 @@ const config: Config = {
       './src/components/**/*.{js,ts,jsx,tsx,mdx}',
       './src/app/**/*.{js,ts,jsx,tsx,mdx}',
    ],
+   safelist: [
+      {
+         pattern: /^bg-/,
+      },
+      {
+         pattern: /^text-/,
+      },
+      {
+         pattern: /^border-/,
+      },
+      {
+         pattern: /^ring-/,
+      },
+      {
+         pattern: /^animate-/,
+      },
+      {
+         pattern: /^from-/,
+      },
+      {
+         pattern: /^via-/,
+      },
+      {
+         pattern: /^to-/,
+      },
+      {
+         pattern: /^p-/,
+      },
+      {
+         pattern: /^m-/,
+      },
+      {
+         pattern: /^w-/,
+      },
+      {
+         pattern: /^h-/,
+      },
+      {
+         pattern: /^grid-cols-/,
+      },
+      {
+         pattern: /^gap-/,
+      },
+      {
+         pattern: /^rounded-/,
+      },
+      {
+         pattern: /^shadow-/,
+      },
+      {
+         pattern: /^flex-/,
+      },
+      {
+         pattern: /^justify-/,
+      },
+      {
+         pattern: /^items-/,
+      },
+      {
+         pattern: /^overflow-/,
+      },
+      {
+         pattern: /^max-w-/,
+      },
+      {
+         pattern: /^space-/,
+      },
+      {
+         pattern: /^ml-/,
+      },
+      {
+         pattern: /^mr-/,
+      },
+      {
+         pattern: /^my-/,
+      },
+      {
+         pattern: /^mx-/,
+      },
+      {
+         pattern: /^mb-/,
+      },
+      {
+         pattern: /^mt-/,
+      },
+   ],
    theme: {
       extend: {
          borderRadius: {
