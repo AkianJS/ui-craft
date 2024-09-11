@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎨 UI Craft
 
-## Getting Started
+Welcome to **UI Craft**! This tool allows you to generate and preview UI components with Tailwind CSS. Just type in the chat to request a UI component, and you'll instantly see it generated on the right, along with the component's code.
 
-First, run the development server:
+## 🛠️ Installation & Setup
+
+### 1. Clone the Repository
+
+To get started, clone the repository by running the following command:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/AkianJS/ui-craft.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project uses `pnpm` for package management. If you don't have it installed, you can install it globally by running:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+npm install -g pnpm
+```
 
-## Learn More
+Once `pnpm` is installed, navigate to the cloned directory and install the project dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+cd ui-craft
+pnpm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Set Up Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+To make the app work in development, you'll need to create a `.env` file in the root of the project and add your `GROQ_API_KEY`. Here's how:
 
-## Deploy on Vercel
+1. In the project root, create a `.env` file:
+    ```bash
+    touch .env
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Open the `.env` file and add the following line, replacing `<your-groq-api-key>` with your actual GROQ API key:
+    ```bash
+    GROQ_API_KEY=<your-groq-api-key>
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### 4. Run the Development Server
+
+To start the development server, run the following command:
+
+```bash
+pnpm run dev
+```
+
+Now open [http://localhost:3000](http://localhost:3000) in your browser to see the app in action.
+
+## 💬 How to Use
+
+Once you have the app running, you'll see a chat interface on the left side of the screen.
+
+1. **Ask for a UI Component**: Type in the chat asking for a specific UI component, such as _"Can you give me a button component?"_
+
+2. **Preview & Code**: You'll receive the requested component on the right side of the screen, along with its **Tailwind CSS** code in the chat.
+
+This is a fast and efficient way to generate UI components and see them in real-time!
