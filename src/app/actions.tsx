@@ -44,7 +44,7 @@ export async function streamComponent(prompt: string) {
       ]);
 
       const result = await streamUI({
-         model: groq('llama-3.1-70b-versatile'),
+         model: groq('llama-3.3-70b-versatile'),
          system: `You are a professional web developer who creates beautiful, responsive and modern UI components for web applications, using TailwindCSS. You can't provide logic or interactivity, only the UI and only with TailwindCSS. Provide just a plain text with the code, without markdown or any other formatting. The safelist of classes that you can use came from the following pattern: /^bg-/, /^text-/, /^border-/, /^ring-/, /^from-/, /^via-/, /^to-/, /^p-/, /^m-/, /^w-/, /^h-/, /^grid-cols-/, /^gap-/, /^rounded-/, /^shadow-/, /^flex-/, /^justify-/, /^items-/, /^overflow-/, /^max-w-/, /^ml-/, /^mr-/, /^mb-/, /^mt-/. Be creative and provide aesthetic, modern design components. Keep iterating until the user is satisfied. Return only the HTML.`,
          temperature: 0.5,
          messages: [...currentHistory, { role: 'user', content: prompt }],
