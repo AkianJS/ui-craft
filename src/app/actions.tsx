@@ -18,52 +18,65 @@ export interface ClientMessage {
 
 export async function streamComponent(prompt: string) {
    'use server';
-   const getAiHistory = getMutableAIState();
 
-   const groq = createGroq({
-      apiKey: process.env.GROQ_API_KEY,
-      baseURL: 'https://api.groq.com/openai/v1',
-   });
+   // Validate environment variable
+   if (!process.env.GROQ_API_KEY) {
+      throw new Error('GROQ_API_KEY is not configured');
+   }
 
-   getAiHistory.update((history: ServerMessage[]) => [
-      ...history,
-      {
-         id: generateId(),
-         role: 'user',
-         content: prompt,
-      },
-   ]);
+   try {
+      const groq = createGroq({
+         apiKey: process.env.GROQ_API_KEY,
+         baseURL: 'https://api.groq.com/openai/v1',
+      });
 
-   const result = await streamUI({
-      model: groq('llama-3.1-70b-versatile'),
-      system: `You are a professional web developer who creates beautiful, responsive and modern UI components for web applications, using TailwindCSS. You can't provide logic or interactivity, only the UI and only with TailwindCSS. Provide just a plain text with the code, without markdown or any other formatting. The safelist of classes that you can use came from the following pattern: /^bg-/, /^text-/, /^border-/, /^ring-/, /^from-/, /^via-/, /^to-/, /^p-/, /^m-/, /^w-/, /^h-/, /^grid-cols-/, /^gap-/, /^rounded-/, /^shadow-/, /^flex-/, /^justify-/, /^items-/, /^overflow-/, /^max-w-/, /^ml-/, /^mr-/, /^mb-/, /^mt-/. Be creative and provide aesthetic, modern design components. Keep iterating until the user is satisfied. Return only the HTML.`,
-      temperature: 0.5,
-      messages: [...getAiHistory.get(), { role: 'user', content: prompt }],
-      text: ({ content, done }) => {
-         if (done) {
-            getAiHistory.done((history: ServerMessage[]) => [
-               ...history,
-               {
-                  id: generateId(),
-                  role: 'assistant',
-                  content: content,
-               },
-            ]);
-         }
-         return (
-            <div
-               className="h-[calc(100vh-60px)] w-full flex flex-col items-center overflow-auto"
-               dangerouslySetInnerHTML={{
-                  __html: content,
-               }}
-            ></div>
-         );
-      },
-   });
+      // Get AI state inside try block
+      const aiState = getMutableAIState();
+      const currentHistory = aiState.get();
 
-   return {
-      component: result.value,
-   };
+      aiState.update((history: ServerMessage[]) => [
+         ...history,
+         {
+            id: generateId(),
+            role: 'user',
+            content: prompt,
+         },
+      ]);
+
+      const result = await streamUI({
+         model: groq('llama-3.1-70b-versatile'),
+         system: `You are a professional web developer who creates beautiful, responsive and modern UI components for web applications, using TailwindCSS. You can't provide logic or interactivity, only the UI and only with TailwindCSS. Provide just a plain text with the code, without markdown or any other formatting. The safelist of classes that you can use came from the following pattern: /^bg-/, /^text-/, /^border-/, /^ring-/, /^from-/, /^via-/, /^to-/, /^p-/, /^m-/, /^w-/, /^h-/, /^grid-cols-/, /^gap-/, /^rounded-/, /^shadow-/, /^flex-/, /^justify-/, /^items-/, /^overflow-/, /^max-w-/, /^ml-/, /^mr-/, /^mb-/, /^mt-/. Be creative and provide aesthetic, modern design components. Keep iterating until the user is satisfied. Return only the HTML.`,
+         temperature: 0.5,
+         messages: [...currentHistory, { role: 'user', content: prompt }],
+         text: ({ content, done }) => {
+            if (done) {
+               aiState.done((history: ServerMessage[]) => [
+                  ...history,
+                  {
+                     id: generateId(),
+                     role: 'assistant',
+                     content: content,
+                  },
+               ]);
+            }
+            return (
+               <div
+                  className="h-[calc(100vh-60px)] w-full flex flex-col items-center overflow-auto"
+                  dangerouslySetInnerHTML={{
+                     __html: content,
+                  }}
+               ></div>
+            );
+         },
+      });
+
+      return {
+         component: result.value,
+      };
+   } catch (error) {
+      console.error('Streaming error:', error);
+      throw new Error('Failed to process the streaming request');
+   }
 }
 
 export const AI = createAI<ServerMessage[], ClientMessage[]>({
